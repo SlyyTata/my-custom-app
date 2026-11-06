@@ -61,12 +61,13 @@ jobs:
           - name: Checkout code
             uses: actions/checkout@v4
 
-          - name: Configure AWS Credentials           #This is OIDC
+          - name: Configure AWS Credentials           #This is OpenID Connection
             uses: aws-actions/configure-aws-credentials@v4
             with:
               aws-region: eu-west-2
               role-to-assume: ${{ secrets.ROLE }}
 
+              #I got this code form google and iv read to understand what it does
           - name: Download Existing Task Definition from AWS
             run: |
               aws ecs describe-task-definition \                            
