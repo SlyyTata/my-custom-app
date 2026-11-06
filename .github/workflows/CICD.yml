@@ -69,10 +69,7 @@ jobs:
 
               #I got this code form google and iv read to understand what it does
           - name: Download Existing Task Definition from AWS
-            run: |
-              aws ecs describe-task-definition \                            
-              --task-definition ${{ secrets.ECS_TASK_FAMILY }} \
-              --query taskDefinition > task-definition.json
+            run: aws ecs describe-task-definition --task-definition ${{ secrets.ECS_TASK_FAMILY }} --query taskDefinition > task-definition.json
 
           - name: Inject New Image Tag into Task Definition
             id: render-task-def
