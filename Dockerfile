@@ -1,6 +1,9 @@
 # Using the official NGINX image from Docker Hub as the base image
 FROM nginx:alpine
 
+# Patch OS-level packages (including zlib 1.4-r0) to pass Trivy security scans
+RUN apk update && apk upgrade --no-cache
+
 # Modify the default Nginx configuration in-place to listen on 8008 instead of 80
 RUN sed -i 's/listen       80;/listen       8008;/g' /etc/nginx/conf.d/default.conf
 
