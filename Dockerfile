@@ -23,7 +23,7 @@ RUN echo '<h1>Hello from Fargate on Port 8008</h1>' > index.html
 RUN chmod -R 755 /usr/share/nginx/html && chown -R nginx:nginx /usr/share/nginx/html
 
 # Expose port 8008 to allow traffic to the NGINX server
-EXPOSE 8008
+EXPOSE 80
 
 # Start NGINX when the container starts
 CMD ["nginx", "-g", "daemon off;"]
