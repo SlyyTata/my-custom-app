@@ -64,7 +64,7 @@ jobs:
           - name: Configure AWS Credentials           #This is OpenID Connection
             uses: aws-actions/configure-aws-credentials@v4
             with:
-              aws-region: eu-north-1
+              aws-region: eu-west-2
               role-to-assume: ${{ secrets.ROLE }}
 
               #I got this code form google and iv read to understand what it does
