@@ -17,12 +17,12 @@ RUN rm -rf ./*
 COPY . .
 
 # Create index.html file to guarantee the directory is not empty
-RUN echo '<h1>Hello from Fargate on Port 8008</h1>' > index.html
+RUN echo '<h1>Hello from Fargate on Port 80</h1>' > index.html
 
 # Grant Nginx ownership and read rights to everything in this directory
 RUN chmod -R 755 /usr/share/nginx/html && chown -R nginx:nginx /usr/share/nginx/html
 
-# Expose port 8008 to allow traffic to the NGINX server
+# Expose port 80 to allow traffic to the NGINX server
 EXPOSE 80
 
 # Start NGINX when the container starts
