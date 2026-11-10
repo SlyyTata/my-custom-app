@@ -67,10 +67,16 @@ jobs:
               aws-region: eu-west-2
               role-to-assume: ${{ secrets.ROLE }}
 
-              #I got this code form google and iv read to understand what it does
+          #I got this code form google and iv read to understand what it does
           - name: Download Existing Task Definition from AWS
-            run: aws ecs describe-task-definition --task-definition ${{ secrets.ECS_TASK_FAMILY }} --query taskDefinition > task-definition.json
+            run: |
+              aws ecs describe-task-definition \
+              --task-definition ${{ secrets.ECS_TASK_FAMILY }} \
+              --query 'taskDefinition' > raw-task-def.json
 
+              jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)' raw-task-def.json > task-definition.json
+
+          # Putting the new image tag into the task definition and creating a new revision of the task definition
           - name: Inject New Image Tag into Task Definition
             id: render-task-def
             uses: aws-actions/amazon-ecs-render-task-definition@v1
@@ -79,6 +85,7 @@ jobs:
               container-name: ${{ secrets.ECS_CONTAINER_NAME }}
               image: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_PROJECT }}:${{ github.sha }}
 
+          # Triggering a rolling update on the existing ECS service with the new task definition
           - name: Trigger Rolling Update on Existing ECS Service
             uses: aws-actions/amazon-ecs-deploy-task-definition@v2
             with:
